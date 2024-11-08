@@ -7,52 +7,56 @@
 
 import SwiftUI
 
+/// A customizable text view that allows for various styling options.
+///
+/// This view provides a simple way to display text with customizable properties
+/// such as font, color, alignment, and line limit.
 struct FMText: View {
-    let text: String
-    let style: FMTextStyleType
+    /// The text to be displayed.
+    let content: String
+    
+    /// The font of the text.
+    let font: Font
+    
+    /// The color of the text.
+    let color: Color
+    
+    /// The alignment of the text.
     let alignment: TextAlignment
-    let bodyColorIsWhite: Bool
-    let titleColorIsWhite: Bool
+    
+    /// The maximum number of lines to display.
+    let lineLimit: Int?
+    
+    let fontWeight: Font.Weight
+    
+    /// Initializes a new `CRText` view with the specified properties.
+    /// - Parameters:
+    ///   - content: The text content to display.
+    ///   - font: The font of the text.
+    ///   - color: The color of the text.
+    ///   - alignment: The alignment of the text.
+    ///   - lineLimit: The maximum number of lines to display.
+    init(content: String,
+         font: Font = .body,
+         color: Color = .primary,
+         alignment: TextAlignment = .leading,
+         lineLimit: Int? = nil,
+         fontWeight: Font.Weight = .regular
+    ) {
+        self.content = content
+        self.font = font
+        self.color = color
+        self.alignment = alignment
+        self.lineLimit = lineLimit
+        self.fontWeight = fontWeight
+    }
     
     var body: some View {
-        Text(text)
-            .font(font(for: style))
-            .foregroundColor(color(for: style))
+        Text(content)
+            .font(font)
+            .fontWeight(fontWeight)
+            .foregroundColor(color)
             .multilineTextAlignment(alignment)
-    }
-
-    private func font(for style: FMTextStyleType) -> Font {
-        switch style {
-        case .title:
-            return .title
-        case .body:
-            return .body
-        case .caption:
-            return .caption
-        case .callout:
-            return .callout
-        }
-    }
-    
-    private func color(for style: FMTextStyleType) -> Color {
-        switch style {
-        case .title:
-            return titleColorIsWhite ? .primaryText : .primaryDarkText
-        case .body:
-            return bodyColorIsWhite ? .primaryText : .secondaryText
-        case .caption:
-            return .tertiaryText
-        case .callout:
-            return .fmAccentLighter
-        }
-    }
-    
-    private func weight(for style: FMTextStyleType) -> Font.Weight {
-        switch style {
-        case .title:
-            return .bold
-        default:
-            return .regular
-        }
+            .lineLimit(lineLimit)
     }
 }

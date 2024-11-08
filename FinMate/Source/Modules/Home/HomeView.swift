@@ -9,117 +9,176 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var homeViewModel: HomeViewModel
-
+    @EnvironmentObject var userManager: UserManager
+    @EnvironmentObject var linkedAccountsManager: LinkedAccountsManager
     var body: some View {
         ZStack {
             // Background Color
             Color.fmPrimary
                 .ignoresSafeArea()
-
-            VStack(spacing: 16) {
-                FMButton(
-                title: "Outlined Button",
-                icon: Image(systemName: "star"),
-                imageOnLeft: true,
-                style: .outlined,
-                size: .medium,
-                cornerRadius: 12,
-                textFont: .title2,
-                textWeight: .bold,
-                action: { print("Outlined Button tapped") }
-            )
-                // FMButton Variations
-                FMButton(
-                    title: "Primary Button",
-                    icon: Image(systemName: "star.fill"),
-                    imageOnLeft: true,
-                    style: .primary,
-                    size: .medium,
-                    cornerRadius: 12,
-                    textFont: .title2,
-                    textWeight: .bold,
-                    action: { print("Primary Button tapped") }
-                )
-
-                FMButton(
-                    title: "Secondary Button",
-                    icon: Image(systemName: "star"),
-                    imageOnLeft: false,
-                    style: .secondary,
-                    size: .medium,
-                    cornerRadius: 12,
-                    textFont: .title3,
-                    textWeight: .semibold,
-                    action: { print("Secondary Button tapped") }
-                )
-
-                FMButton(
-                    title: "Destructive Button",
-                    icon: nil,
-                    imageOnLeft: true,
-                    style: .destructive,
-                    size: .large,
-                    cornerRadius: 16,
-                    textFont: .body,
-                    textWeight: .regular,
-                    action: { print("Destructive Button tapped") }
-                )
-
-                // FMCard Variations
-                FMCard(style: .filled) {
-                    Text("This is a filled card")
-                        .font(.body)
-                        .foregroundColor(.primaryText)
-                }
-
-                FMCard(style: .outline) {
-                    Text("This is an outline card")
-                        .font(.body)
-                        .foregroundColor(.primaryText)
-                }
-
-                FMCard(style: .gradient) {
-                    Text("This is a gradient card")
-                        .font(.body)
-                        .foregroundColor(.white)
-                }
-
-                // FMText Variations
-                FMText(
-                    text: "This is a Title",
-                    style: .title,
-                    alignment: .center,
-                    bodyColorIsWhite: false,
-                    titleColorIsWhite: true
-                )
-                FMText(
-                    text: "This is a Body",
-                    style: .body,
-                    alignment: .leading,
-                    bodyColorIsWhite: true,
-                    titleColorIsWhite: true
-                )
-                FMText(
-                    text: "This is a Caption",
-                    style: .caption,
-                    alignment: .trailing,
-                    bodyColorIsWhite: false,
-                    titleColorIsWhite: true
-                )
-                FMText(
-                    text: "This is a Callout",
-                    style: .callout,
-                    alignment: .center,
-                       bodyColorIsWhite: false,
-                       titleColorIsWhite: true
-                   )
+            
+            VStack {
+                greetingText
+                
+                cardsView
+                
+                Spacer()
             }
-            .padding()
+            .padding(AppConstants.Paddings.medium)
         }
+    }
+    
+    private var greetingText: some View {
+        HStack {
+            FMText(
+                content: "Hello,",
+                font: .title,
+                color: .primaryText,
+                fontWeight: .bold
+            )
+            FMText(
+                content: userManager.user.name + "!",
+                font: .title,
+                color: .fmAccentLighter,
+                fontWeight: .bold
+            )
+            
+            Spacer()
+            
+            AsyncImage(url: userManager.user.profilePictureURL) { image in
+                image
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
+            } placeholder: {
+                ProgressView()
+            }
+        }
+    }
+    
+    private var cardsView: some View {
+        linkedAccountsCards
+        .padding(AppConstants.Paddings.medium)
+        .background(
+            FMCardView(
+                foregroundColor: .fmSecondary,
+                cornerRadius: AppConstants.CornerRadius.large,
+                shadowColor: .clear,
+                shadowRadius: 0,
+                contentAlignment: .center,
+                strokeColor: nil,
+                strokeWidth: nil
+            )
+        )
+    }
+    
+    private var linkedAccountsCards: some View {
+        ScrollView(.horizontal) {
+            HStack {
+                LazyHStack {
+                    ForEach(userManager.user.linkedAccounts.indices, id: \.self) { index in
+                        accountCell(at: index)
+                    }
+                }
+                
+                addLinkedAccountButton
+            }
+        }
+        .frame(width: .infinity, height: 120)
+        .padding(.vertical, AppConstants.Paddings.small)
+        .scrollIndicators(.hidden)
+    }
+    
+    private func accountCell(at index: Int) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: AppConstants.Paddings.tiny) {
+                FMText(content: userManager.user.linkedAccounts[index].icon)
+                    .padding(.horizontal, AppConstants.Paddings.tiny)
+                    .background(
+                        FMCardView(
+                            foregroundColor: Color(userManager.user.linkedAccounts[index].backgroundColor),
+                            cornerRadius: AppConstants.CornerRadius.small,
+                            shadowColor: .clear,
+                            shadowRadius: 0,
+                            contentAlignment: .center,
+                            strokeColor: nil,
+                            strokeWidth: nil
+                        )
+                    )
+                
+                FMText(
+                    content: userManager.user.linkedAccounts[index].accountName,
+                    font: .caption,
+                    color: .secondaryText,
+                    fontWeight: .regular
+                )
+                
+                VStack(alignment: .leading) {
+                    FMText(
+                        content: String(userManager.user.linkedAccounts[index].balance),
+                        font: .body,
+                        color: .primaryDarkText,
+                        fontWeight: .bold
+                    )
+                    
+                    FMText(
+                        content: userManager.user.linkedAccounts[index].currency,
+                        font: .title3,
+                        color: .primaryDarkText,
+                        fontWeight: .regular
+                    )
+                }
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .frame(width: homeViewModel.accountCardWidth)
+        .background(
+            FMCardView(
+                foregroundColor: .primaryText,
+                cornerRadius: AppConstants.CornerRadius.medium,
+                shadowColor: .clear,
+                shadowRadius: 0,
+                contentAlignment: .center,
+                strokeColor: nil,
+                strokeWidth: nil
+            )
+        )
+    }
+    
+    private var addLinkedAccountButton: some View {
+        FMButton(
+            action: { },
+            foregroundColor: .clear,
+            cornerRadius: AppConstants.CornerRadius.medium,
+            shadowColor: .clear,
+            shadowRadius: 0,
+            contentAlignment: .center,
+            strokeColor: .blue10,
+            strokeWidth: 1) {
+                VStack {
+                    Image(.plus)
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                    
+                    FMText(
+                        content: "Add Account",
+                        font: .body,
+                        color: .primaryText,
+                        fontWeight: .bold
+                    )
+                }
+                .padding(AppConstants.Paddings.medium)
+                .frame(height: 120)
+            }
+            .modifier(GetWidthModifier(width: $homeViewModel.accountCardWidth))
     }
 }
 
 #Preview {
     HomeView(homeViewModel: HomeViewModel())
+        .environmentObject(UserManager())
+        .environmentObject(LinkedAccountsManager())
 }
 

@@ -7,83 +7,51 @@
 
 import SwiftUI
 
-struct FMButton: View {
-    let title: String
-    let icon: Image?
-    let style: FMButtonStyleType
-    let size: FMComponentSize
-    let imageOnLeft: Bool?
-    let cornerRadius: CGFloat
-    let textFont: Font
-    let textWeight: Font.Weight
+
+/// A customizable button that uses the CRCardView for its appearance.
+///
+/// This button allows you to specify its appearance and action when tapped.
+struct FMButton<Content: View>: View {
+    /// The action to perform when the button is tapped.
     let action: () -> Void
-
-    init(title: String,
-         icon: Image? = nil,
-         imageOnLeft: Bool,
-         style: FMButtonStyleType,
-         size: FMComponentSize = .medium,
-         cornerRadius: CGFloat,
-         textFont: Font,
-         textWeight: Font.Weight ,
-         action: @escaping () -> Void
-    ) {
-        self.title = title
-        self.icon = icon
-        self.style = style
-        self.size = size
-        self.action = action
-        self.imageOnLeft = imageOnLeft
-        self.cornerRadius = cornerRadius
-        self.textFont = textFont
-        self.textWeight = textWeight
-    }
-
+    
+    /// The foreground color of the button.
+    let foregroundColor: Color
+    
+    /// The corner radius of the button.
+    let cornerRadius: CGFloat
+    
+    /// The shadow color of the button.
+    let shadowColor: Color
+    
+    /// The shadow radius of the button.
+    let shadowRadius: CGFloat
+    
+    /// The alignment for positioning the content within the button.
+    let contentAlignment: Alignment
+    
+    /// The optional stroke color for the button's border.
+    let strokeColor: Color?
+    
+    /// The optional stroke width for the button's border.
+    let strokeWidth: CGFloat?
+    
+    /// The content view to display inside the button.
+    let content: () -> Content
+    
     var body: some View {
         Button(action: action) {
-            HStack {
-                if let icon = icon, let imageOnLeft = imageOnLeft, imageOnLeft {
-                    icon
-                }
-                
-                Text(title)
-                    .font(textFont)
-                    .fontWeight(textWeight)
-                
-                if let icon = icon, let imageOnLeft = imageOnLeft, !imageOnLeft {
-                    icon
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .padding(sizePadding)
-            .background(backgroundColor)
-            .foregroundColor(.primaryText)
-            .overlay(border)
-            .shadow(radius: style == .primary || style == .outlined ? 4 : 0)
-            .cornerRadius(cornerRadius)
-        }
-    }
-
-    private var backgroundColor: Color {
-        switch style {
-        case .primary: return Color.fmSecondary
-        case .secondary: return Color.fmCard
-        case .destructive: return Color.red4
-        case .outlined: return Color.clear // Transparent background for outlined
-        }
-    }
-
-    private var border: some View {
-        // Only apply border for outlined buttons
-        style == .outlined ? RoundedRectangle(cornerRadius: cornerRadius)
-            .stroke(Color.gray, lineWidth: 2) : nil
-    }
-
-    private var sizePadding: EdgeInsets {
-        switch size {
-        case .small: return EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-        case .medium: return EdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24)
-        case .large: return EdgeInsets(top: 16, leading: 32, bottom: 16, trailing: 32)
+            content()
+                .background(
+                    FMCardView(
+                    foregroundColor: foregroundColor,
+                    cornerRadius: cornerRadius,
+                    shadowColor: shadowColor,
+                    shadowRadius: shadowRadius,
+                    contentAlignment: contentAlignment,
+                    strokeColor: strokeColor,
+                    strokeWidth: strokeWidth)
+                )
         }
     }
 }
