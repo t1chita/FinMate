@@ -19,7 +19,17 @@ struct Transaction: Identifiable {
     var isRecurring: Bool
     var isCompleted: Bool
     
-    init(id: UUID = UUID(), accountId: UUID, amount: Double, category: TransactionCategory, date: Date, description: String? = nil, transactionType: TransactionType, isRecurring: Bool = false, isCompleted: Bool = true) {
+    init(
+        id: UUID = UUID(),
+        accountId: UUID,
+        amount: Double,
+        category: TransactionCategory,
+        date: Date,
+        description: String? = nil,
+        transactionType: TransactionType,
+        isRecurring: Bool = false,
+        isCompleted: Bool = true
+    ) {
         self.id = id
         self.accountId = accountId
         self.amount = amount
