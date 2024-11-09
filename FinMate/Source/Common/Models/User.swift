@@ -49,8 +49,8 @@ struct User: Identifiable {
     }
 }
 
-struct BalanceHistory: Identifiable {
-    let id: UUID = UUID()
+struct BalanceHistory: Identifiable, Equatable {
+    let id: Int
     let balance: Double
     let date: Date
 }
