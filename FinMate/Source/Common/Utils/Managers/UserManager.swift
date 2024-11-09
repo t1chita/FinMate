@@ -23,67 +23,72 @@ final class UserManager: ObservableObject {
                 accountType: .creditCard,
                 balance: 0.0
             ),
-//            ManualAccount(
-//                backgroundColor: "Green 4",
-//                id: 2,
-//                accountName: "Cash Wallet",
-//                currency: "GEL",
-//                accountType: .cash,
-//                balance: 500.0
-//            )
+            ManualAccount(
+                backgroundColor: "Green 4",
+                id: 2,
+                accountName: "Cash Wallet",
+                currency: "GEL",
+                accountType: .cash,
+                balance: 500.0
+            )
         ],
         currency: "GEL",
         transactions: [
-//            Transaction(
-//                accountId: UUID(),
-//                amount: 200.0,
-//                category: .food,
-//                date: Date().addingTimeInterval(-60 * 60 * 24 * 2), // 2 days ago
-//                description: "Groceries",
-//                transactionType: .expense,
-//                isRecurring: false,
-//                isCompleted: true
-//            ),
-//            Transaction(
-//                accountId: UUID(),
-//                amount: 200.0,
-//                category: .entertainment,
-//                date: Date().addingTimeInterval(-60 * 60 * 24 * 5), // 5 days ago
-//                description: "Movie night",
-//                transactionType: .expense,
-//                isRecurring: false,
-//                isCompleted: true
-//            ),
-//            Transaction(
-//                accountId: UUID(),
-//                amount: 500.0,
-//                category: .entertainment,
-//                date: Date().addingTimeInterval(-60 * 60 * 24 * 10), // 10 days ago
-//                description: "Freelance Project",
-//                transactionType: .income,
-//                isRecurring: false,
-//                isCompleted: true
-//            ),
-//            Transaction(
-//                accountId: UUID(),
-//                amount: 100.0,
-//                category: .transportation,
-//                date: Date().addingTimeInterval(-60 * 60 * 24 * 15), // 15 days ago
-//                description: "Taxi ride",
-//                transactionType: .expense,
-//                isRecurring: false,
-//                isCompleted: true
-//            ),
-//            Transaction(
-//                accountId: UUID(),
-//                amount: 500.0,
-//                category: .utilities,
-//                date: Date().addingTimeInterval(-60 * 60 * 24 * 20), // 20 days ago
-//                description: "Electricity Bill",
-//                transactionType: .expense,
-//                isRecurring: true,
-//                isCompleted: true
-//            )
+            Transaction(
+                id: 1,
+                accountId: 1,
+                amount: 200.0,
+                category: .food,
+                date: Date().addingTimeInterval(-60 * 60 * 24 * 2), // 2 days ago
+                description: "Groceries",
+                transactionType: .expense,
+                isRecurring: false,
+                isCompleted: true
+            ),
+            Transaction(
+                id: 2,
+                accountId: 1,
+                amount: 200.0,
+                category: .entertainment,
+                date: Date().addingTimeInterval(-60 * 60 * 24 * 5), // 5 days ago
+                description: "Movie night",
+                transactionType: .expense,
+                isRecurring: false,
+                isCompleted: true
+            ),
+            Transaction(
+                id: 3,
+                accountId: 1,
+                amount: 500.0,
+                category: .entertainment,
+                date: Date().addingTimeInterval(-60 * 60 * 24 * 10), // 10 days ago
+                description: "Freelance Project",
+                transactionType: .income,
+                isRecurring: false,
+                isCompleted: true
+            ),
+            Transaction(
+                id: 4,
+                accountId: 2,
+                amount: 100.0,
+                category: .transportation,
+                date: Date().addingTimeInterval(-60 * 60 * 24 * 15), // 15 days ago
+                description: "Taxi ride",
+                transactionType: .expense,
+                isRecurring: false,
+                isCompleted: true
+            ),
+            Transaction(
+                id: 5,
+                accountId: 2,
+                amount: 500.0,
+                category: .utilities,
+                date: Date().addingTimeInterval(-60 * 60 * 24 * 20), // 20 days ago
+                description: "Electricity Bill",
+                transactionType: .expense,
+                isRecurring: true,
+                isCompleted: true
+            )
         ],
         balance: 0.0,
         balanceHistory: [

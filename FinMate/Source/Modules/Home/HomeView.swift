@@ -24,7 +24,7 @@ struct HomeView: View {
                 
                 cardsView
                 
-                balanceTrendCard
+                widgetsOfUser
                 
                 Spacer()
             }
@@ -180,7 +180,7 @@ struct HomeView: View {
             .modifier(GetWidthModifier(width: $homeViewModel.accountCardWidth))
     }
     
-    private var balanceTrendCard: some View {
+    private var widgetsOfUser: some View {
         ScrollView {
             VStack {
                 balanceTrendCardHeader
@@ -189,6 +189,18 @@ struct HomeView: View {
                     .padding(.horizontal, -16)
                 
                 chartForBalanceTrendCard
+                
+                HStack {
+                    Spacer()
+                    
+                    FMText(
+                        content: "See More",
+                        font: .caption,
+                        color: .fmAccent,
+                        fontWeight: .regular
+                    )
+                    .underline()
+                }
             }
             .padding(AppConstants.Paddings.medium)
             .background(
@@ -203,8 +215,11 @@ struct HomeView: View {
                 )
             )
             .frame(height: 250)
+            
+            lastFiveTransactionView
         }
     }
+    
     private var balanceTrendCardHeader: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -217,37 +232,17 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                ThreeDotsButton() {
+                ThreeDotsButton(color: .primaryDarkText) {
                     print("ThreeDot")
                 }
             }
-//            
-//            Picker("", selection: $homeViewModel.currentTab) {
-//                FMText(
-//                    content: "7 Days",
-//                    font: .body,
-//                    color: .primaryDarkText,
-//                    fontWeight: .bold
-//                )
-//                .tag("7 Days")
-//
-//                FMText(
-//                    content: "Last Month",
-//                    font: .body,
-//                    color: .primaryDarkText,
-//                    fontWeight: .bold
-//                )
-//                .tag("Last Month")
-//                
-//                FMText(
-//                    content: "3 Month",
-//                    font: .body,
-//                    color: .primaryDarkText,
-//                    fontWeight: .bold
-//                )
-//                .tag("3 Month")
-//            }
-//            .pickerStyle(.segmented)
+            
+            FMText(
+                content: userManager.user.balance.stringFormat + " " + userManager.user.currency,
+                font: .title3,
+                color: .primaryDarkText,
+                fontWeight: .bold
+            )
         }
     }
     
@@ -357,24 +352,151 @@ struct HomeView: View {
             }
         }
     }
-}
-
-struct ThreeDotsButton: View {
-    let action: () -> Void
     
-    init(action: @escaping () -> Void) {
-        self.action = action
+    private var lastFiveTransactionView: some View {
+        VStack(spacing: AppConstants.Paddings.large) {
+            HStack {
+                FMText(
+                    content: "Last 5 Transaction",
+                    font: .body,
+                    color: .primaryText,
+                    fontWeight: .bold
+                )
+                
+                Spacer()
+                
+                ThreeDotsButton(color: .primaryText) {
+                    print("ThreeDot")
+                }
+            }
+            
+            if userManager.user.transactions.isEmpty {
+                noTransactionView
+            } else {
+                transactionCell
+
+                HStack {
+                    Spacer()
+                    
+                    FMText(
+                        content: "See More",
+                        font: .caption,
+                        color: .fmAccentLighter,
+                        fontWeight: .regular
+                    )
+                    .underline()
+                }
+            }
+        }
+        .padding(AppConstants.Paddings.medium)
+        .background(
+            FMCardView(
+                foregroundColor: .clear,
+                cornerRadius: AppConstants.CornerRadius.medium,
+                shadowColor: .clear,
+                shadowRadius: 0,
+                contentAlignment: .center,
+                strokeColor: .primaryText,
+                strokeWidth: 1
+            )
+        )
     }
     
-    var body: some View {
-        Button {
-            action()
-        } label: {
-            Image(systemName: "ellipsis.circle.fill")
-                .foregroundStyle(.primaryDarkText)
+    private var noTransactionView: some View {
+        VStack(spacing: AppConstants.Paddings.medium)  {
+            FMText(
+                content: "You Have Not Any Transaction",
+                font: .body,
+                color: .primaryText,
+                alignment: .center,
+                fontWeight: .bold
+            )
+            
+            VStack(spacing: AppConstants.Paddings.small) {
+                Image(.plus)
+                
+                FMText(
+                    content: "Add Transaction",
+                    font: .body,
+                    color: .tertiaryText,
+                    fontWeight: .regular
+                )
+            }
+        }
+        
+    }
+    
+    private var transactionCell: some View {
+        ForEach(userManager.user.transactions) { transaction in
+            HStack {
+                FMText(
+                    content: "\(transaction.emoji)",
+                    font: .body,
+                    color: .white,
+                    fontWeight: .regular
+                )
+                .padding(AppConstants.Paddings.tiny)
+                .background(
+                    FMCardView(
+                        foregroundColor: Color(transaction.backgroundColor),
+                        cornerRadius: AppConstants.CornerRadius.small,
+                        shadowColor: .clear,
+                        shadowRadius: 0,
+                        contentAlignment: .center,
+                        strokeColor: nil,
+                        strokeWidth: nil
+                    )
+                )
+                
+                VStackLayout(alignment: .leading) {
+                    FMText(content: transaction.category.rawValue.uppercased(),
+                           font: .callout,
+                           color: .primaryText,
+                           fontWeight: .bold)
+                    
+                    FMText(content: homeViewModel.getAccount(with: transaction.accountId,
+                                                             in: userManager.user.linkedAccounts).accountName,
+                           font: .body,
+                           color: .secondaryText,
+                           fontWeight: .bold)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing) {
+                    FMText(
+                        content: transaction.amount.stringFormat + " " + userManager.user.currency,
+                        font: .caption,
+                        color: transaction.transactionType == .expense ? .red4 : .green5,
+                        fontWeight: .regular
+                    )
+                    
+                    FMText(
+                        content: transaction.date.formatted(),
+                        font: .caption,
+                        color: transaction.transactionType == .expense ? .red4 : .green5,
+                        fontWeight: .regular
+                    )
+                    
+                    
+                }
+            }
+            .padding(AppConstants.Paddings.small)
+            .background(
+                FMCardView(
+                    foregroundColor: .clear,
+                    cornerRadius: AppConstants.CornerRadius.small,
+                    shadowColor: .clear,
+                    shadowRadius: 0,
+                    contentAlignment: .center,
+                    strokeColor: transaction.transactionType == .expense ? .red4 : .green5,
+                    strokeWidth: 2
+                )
+            )
         }
     }
 }
+
 
 #Preview {
     HomeView(homeViewModel: HomeViewModel())

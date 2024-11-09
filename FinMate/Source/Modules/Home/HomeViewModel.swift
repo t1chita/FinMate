@@ -39,5 +39,7 @@ final class HomeViewModel: ObservableObject {
         return balanceHistory.map { $0.balance }.min() ?? 0
     }
     
-    
+    func getAccount(with id: Int, in accounts: [any Account]) -> any Account {
+        return accounts.first(where: {$0.id == id} )!
+    }
 }
