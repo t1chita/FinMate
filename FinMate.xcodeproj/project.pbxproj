@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		26BA170F2CDE4C140057E718 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 26BA170E2CDE4C140057E718 /* SwiftUICharts */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		26C287A82CDBEAF00068E250 /* FinMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26BA170F2CDE4C140057E718 /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = FinMate;
 			packageProductDependencies = (
+				26BA170E2CDE4C140057E718 /* SwiftUICharts */,
 			);
 			productName = FinMate;
 			productReference = 26C287A82CDBEAF00068E250 /* FinMate.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 26C2879F2CDBEAF00068E250;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				26BA170D2CDE4C140057E718 /* XCRemoteSwiftPackageReference "ChartView" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 26C287A92CDBEAF00068E250 /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		26BA170D2CDE4C140057E718 /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		26BA170E2CDE4C140057E718 /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 26BA170D2CDE4C140057E718 /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 26C287A02CDBEAF00068E250 /* Project object */;
 }
