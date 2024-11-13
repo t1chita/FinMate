@@ -70,12 +70,12 @@ struct Transaction: Identifiable {
     }
 }
 
-enum TransactionType: String {
+enum TransactionType: String, Hashable {
     case income
     case expense
 }
 
-enum TransactionCategory: String, CaseIterable {
+enum TransactionCategory: String, CaseIterable, Hashable {
     case food
     case entertainment
     case health

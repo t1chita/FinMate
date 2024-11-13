@@ -217,6 +217,8 @@ struct HomeView: View {
             .frame(height: 250)
             
             lastFiveTransactionView
+            
+            pieChart
         }
     }
     
@@ -495,8 +497,57 @@ struct HomeView: View {
             )
         }
     }
+    
+    private var pieChart: some View {
+        VStack {
+            categoriesPicker
+            
+                // Pie Chart
+                Chart(homeViewModel.getTransactionsReadyForPieChart(userManager.user.transactions)) { data in
+                    SectorMark(
+                        angle: .value("Amount", data.totalAmount),
+                        innerRadius: .ratio(0.5)
+                    )
+                    .foregroundStyle(by: .value("Category", data.category.rawValue.uppercased()))
+                }
+                .frame(height: 200)
+                
+                // Bar Chart
+                Chart(homeViewModel.getTransactionsReadyForPieChart(userManager.user.transactions)) { data in
+                    BarMark(
+                        x: .value("Amount", data.totalAmount),
+                        y: .value("Category", data.category.rawValue.uppercased())
+                    )
+                    .foregroundStyle(by: .value("Category", data.category.rawValue.uppercased()))
+                    .cornerRadius(5)
+                }
+                .frame(height: 150)
+            }
+            .padding(AppConstants.Paddings.medium)
+            .background(
+                FMCardView(
+                    foregroundColor: .primaryText,
+                    cornerRadius: AppConstants.CornerRadius.large,
+                    shadowColor: .clear,
+                    shadowRadius: 0,
+                    contentAlignment: .center,
+                    strokeColor: nil,
+                    strokeWidth: nil
+                )
+            )
+    }
+    
+    private var categoriesPicker: some View {
+        Picker("", selection: $homeViewModel.categoriesChart) {
+            Text("Expanded")
+                .tag("Expanded")
+            
+            Text("Income")
+                .tag("Income")
+        }
+        .pickerStyle(SegmentedPickerStyle())
+    }
 }
-
 
 #Preview {
     HomeView(homeViewModel: HomeViewModel())
