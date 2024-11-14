@@ -11,8 +11,7 @@ import Charts
 struct HomeView: View {
     @StateObject var homeViewModel: HomeViewModel
     @EnvironmentObject var userManager: UserManager
-    @EnvironmentObject var linkedAccountsManager: LinkedAccountsManager
-    
+ 
     var body: some View {
         ZStack {
             // Background Color
@@ -28,7 +27,8 @@ struct HomeView: View {
                 
                 Spacer()
             }
-            .padding(AppConstants.Paddings.medium)
+            .padding(.horizontal, AppConstants.Paddings.medium)
+            .padding(.top, AppConstants.Paddings.medium)
         }
     }
     
@@ -405,28 +405,27 @@ struct HomeView: View {
     }
     
     private var noTransactionView: some View {
-        VStack(spacing: AppConstants.Paddings.medium)  {
-            FMText(
-                content: "You Have Not Any Transaction",
-                font: .body,
-                color: .primaryText,
-                alignment: .center,
-                fontWeight: .bold
-            )
-            
-            VStack(spacing: AppConstants.Paddings.small) {
-                Image(.plus)
-                
-                FMText(
-                    content: "Add Transaction",
-                    font: .body,
-                    color: .tertiaryText,
-                    fontWeight: .regular
-                )
-            }
-        }
+    VStack(spacing: AppConstants.Paddings.medium)  {
+        FMText(
+            content: "You Have Not Any Transaction",
+            font: .body,
+            color: .primaryText,
+            alignment: .center,
+            fontWeight: .bold
+        )
         
+        VStack(spacing: AppConstants.Paddings.small) {
+            Image(.plus)
+            
+            FMText(
+                content: "Add Transaction",
+                font: .body,
+                color: .tertiaryText,
+                fontWeight: .regular
+            )
+        }
     }
+}
     
     private var transactionCell: some View {
         ForEach(userManager.user.transactions) { transaction in
@@ -479,8 +478,6 @@ struct HomeView: View {
                         color: transaction.transactionType == .expense ? .red4 : .green5,
                         fontWeight: .regular
                     )
-                    
-                    
                 }
             }
             .padding(AppConstants.Paddings.small)
@@ -499,30 +496,46 @@ struct HomeView: View {
     }
     
     private var pieChart: some View {
-        VStack {
-            categoriesPicker
-            
-                // Pie Chart
-                Chart(homeViewModel.getTransactionsReadyForPieChart(userManager.user.transactions)) { data in
-                    SectorMark(
-                        angle: .value("Amount", data.totalAmount),
-                        innerRadius: .ratio(0.5)
-                    )
-                    .foregroundStyle(by: .value("Category", data.category.rawValue.uppercased()))
+        Group {
+            if !userManager.user.transactions.isEmpty {
+                VStack {
+                    HStack {
+                        FMText(
+                            content: "Expenses And Income",
+                            font: .body,
+                            color: .primaryDarkText,
+                            fontWeight: .bold
+                        )
+
+                        Spacer()
+                    }
+                    categoriesPicker
+                    
+                    // Pie Chart
+                    Chart(homeViewModel.getTransactionsReadyForPieChart(userManager.user.transactions)) { data in
+                        SectorMark(
+                            angle: .value("Amount", data.totalAmount),
+                            innerRadius: .ratio(0.5)
+                        )
+                        .foregroundStyle(by: .value("Category", data.category.rawValue.uppercased()))
+                    }
+                    .frame(height: 200)
+                    
+                    // Bar Chart
+                    Chart(homeViewModel.getTransactionsReadyForPieChart(userManager.user.transactions)) { data in
+                        BarMark(
+                            x: .value("Amount", data.totalAmount),
+                            y: .value("Category", data.category.rawValue.uppercased())
+                        )
+                        .foregroundStyle(by: .value("Category", data.category.rawValue.uppercased()))
+                        .cornerRadius(5)
+                    }
+                    .frame(height: 150)
                 }
-                .frame(height: 200)
-                
-                // Bar Chart
-                Chart(homeViewModel.getTransactionsReadyForPieChart(userManager.user.transactions)) { data in
-                    BarMark(
-                        x: .value("Amount", data.totalAmount),
-                        y: .value("Category", data.category.rawValue.uppercased())
-                    )
-                    .foregroundStyle(by: .value("Category", data.category.rawValue.uppercased()))
-                    .cornerRadius(5)
-                }
-                .frame(height: 150)
+            } else {
+                noCategoryView
             }
+        }
             .padding(AppConstants.Paddings.medium)
             .background(
                 FMCardView(
@@ -546,6 +559,45 @@ struct HomeView: View {
                 .tag("Income")
         }
         .pickerStyle(SegmentedPickerStyle())
+    }
+    
+    private var noCategoryView: some View {
+        VStack(spacing: AppConstants.Paddings.medium)  {
+            HStack {
+                FMText(
+                    content: "Expenses And Income",
+                    font: .body,
+                    color: .primaryDarkText,
+                    fontWeight: .bold
+                )
+
+                Spacer()
+                
+                ThreeDotsButton(color: .primaryDarkText) {
+                        print("Expenses And Income")
+                    }
+            }
+            
+            FMText(
+                content: "We Can't Track Your Expanses And Income",
+                font: .body,
+                color: .primaryDarkText,
+                alignment: .center,
+                fontWeight: .bold
+            )
+            
+            VStack(spacing: AppConstants.Paddings.small) {
+                Image(.plus)
+                
+                FMText(
+                    content: "Add Transactions",
+                    font: .body,
+                    color: .primaryDarkText,
+                    fontWeight: .regular
+                )
+            }
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 

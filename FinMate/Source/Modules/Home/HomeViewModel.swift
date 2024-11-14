@@ -74,12 +74,7 @@ final class HomeViewModel: ObservableObject {
     }
 }
 
-struct PieChartData: Identifiable {
-    let id = UUID()
-    let category: TransactionCategory
-    let type: TransactionType
-    let totalAmount: Double
-}
+
 
 struct TransactionKey: Hashable {
     let category: TransactionCategory
