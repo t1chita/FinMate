@@ -128,19 +128,3 @@ final class UserManager: ObservableObject {
         updatedAt: Date()
     )
 }
-
-final class LinkedAccountsManager: ObservableObject {
-    @Published var selectedAccount: any Account =  BankAccount(
-        backgroundColor: "Blue 7",
-        id: 1,
-        accountNumber: "123456",
-        currency: "GEL",
-        accountName: "My Bank",
-        accountType: .creditCard,
-        balance: 1000.0
-    )
-    
-    func selectAccount(_ account: any Account) {
-        selectedAccount = account
-    }
-}

@@ -11,8 +11,7 @@ import Charts
 struct HomeView: View {
     @StateObject var homeViewModel: HomeViewModel
     @EnvironmentObject var userManager: UserManager
-    @EnvironmentObject var linkedAccountsManager: LinkedAccountsManager
-    
+ 
     var body: some View {
         ZStack {
             // Background Color
@@ -28,7 +27,8 @@ struct HomeView: View {
                 
                 Spacer()
             }
-            .padding(AppConstants.Paddings.medium)
+            .padding(.horizontal, AppConstants.Paddings.medium)
+            .padding(.top, AppConstants.Paddings.medium)
         }
     }
     
@@ -405,27 +405,27 @@ struct HomeView: View {
     }
     
     private var noTransactionView: some View {
-        VStack(spacing: AppConstants.Paddings.medium)  {
-            FMText(
-                content: "You Have Not Any Transaction",
-                font: .body,
-                color: .primaryText,
-                alignment: .center,
-                fontWeight: .bold
-            )
+    VStack(spacing: AppConstants.Paddings.medium)  {
+        FMText(
+            content: "You Have Not Any Transaction",
+            font: .body,
+            color: .primaryText,
+            alignment: .center,
+            fontWeight: .bold
+        )
+        
+        VStack(spacing: AppConstants.Paddings.small) {
+            Image(.plus)
             
-            VStack(spacing: AppConstants.Paddings.small) {
-                Image(.plus)
-                
-                FMText(
-                    content: "Add Transaction",
-                    font: .body,
-                    color: .tertiaryText,
-                    fontWeight: .regular
-                )
-            }
+            FMText(
+                content: "Add Transaction",
+                font: .body,
+                color: .tertiaryText,
+                fontWeight: .regular
+            )
         }
     }
+}
     
     private var transactionCell: some View {
         ForEach(userManager.user.transactions) { transaction in
