@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct MainTabView: View {
+    
+    init() {
+        UITabBar.appearance().backgroundColor = UIColor.primaryText // Set the background color of the tab bar.
+    }
+    
     var body: some View {
         TabView {
             HomeView(homeViewModel: HomeViewModel())
@@ -56,9 +61,7 @@ struct MainTabView: View {
                 }
         }
         .accentColor(.blue)
+        .toolbarBackground(.primaryText, for: .tabBar)
     }
 }
-
-#Preview {
-    MainTabView()
-}
+ 
