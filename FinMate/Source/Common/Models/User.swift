@@ -9,7 +9,7 @@ import Foundation
 
 /// The `User` struct represents a user in the FinMate app, containing information about the user’s profile, linked accounts, transactions, balance, and history.
 struct User: Identifiable {
-    let id: UUID // Unique identifier for the user
+    let id: String // Unique identifier for the user
     var name: String // The user's full name
     var email: String // The user's email address
     var profilePictureURL: URL? // Optional URL for the user's profile picture
@@ -36,7 +36,7 @@ struct User: Identifiable {
     ///   - createdAt: The date when the user was created (default is the current date)
     ///   - updatedAt: The date when the user information was last updated (default is the current date)
     init(
-        id: UUID = UUID(),
+        id: String,
         name: String,
         email: String,
         profilePictureURL: URL? = nil, // Default value is nil for the profile picture URL

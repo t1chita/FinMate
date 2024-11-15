@@ -10,7 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     
     init() {
-        UITabBar.appearance().backgroundColor = UIColor.primaryText // Set the background color of the tab bar.
+        UITabBar.appearance().backgroundColor = UIColor.primaryText  
     }
     
     var body: some View {
@@ -23,14 +23,14 @@ struct MainTabView: View {
                         Text("Home")
                     }
                 }
-            Text("Transactions")
-                .tabItem {
-                    VStack {
-                        Image(.transactions)
-                        
-                        Text("Transactions")
-                    }
-                }
+//            Text("Transactions")
+//                .tabItem {
+//                    VStack {
+//                        Image(.transactions)
+//                        
+//                        Text("Transactions")
+//                    }
+//                }
             
             Text("Budget")
                 .tabItem {

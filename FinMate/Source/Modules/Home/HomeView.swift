@@ -220,6 +220,7 @@ struct HomeView: View {
             
             pieChart
         }
+        .scrollIndicators(.hidden)
     }
     
     private var balanceTrendCardHeader: some View {

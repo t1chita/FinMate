@@ -1,5 +1,5 @@
 //
-//  stores.swift
+//  BalanceHistory.swift
 //  FinMate
 //
 //  Created by Temur Chitashvili on 14.11.24.
@@ -18,7 +18,11 @@ struct BalanceHistory: Identifiable, Equatable {
     ///   - id: Unique identifier for the balance history entry
     ///   - balance: The balance value recorded at the given date
     ///   - date: The date when the balance was recorded
-    init(id: Int, balance: Double, date: Date) {
+    init(
+        id: Int,
+        balance: Double,
+        date: Date
+    ) {
         self.id = id
         self.balance = balance
         self.date = date
