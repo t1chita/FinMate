@@ -15,7 +15,7 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             // Background Color
-            Color.fmPrimary
+            Color.white
                 .ignoresSafeArea()
             
             VStack {
@@ -37,7 +37,7 @@ struct HomeView: View {
             FMText(
                 content: "Hello,",
                 font: .title,
-                color: .primaryText,
+                color: .primaryDarkText,
                 fontWeight: .bold
             )
             FMText(
@@ -362,13 +362,13 @@ struct HomeView: View {
                 FMText(
                     content: "Last 5 Transaction",
                     font: .body,
-                    color: .primaryText,
+                    color: .primaryDarkText,
                     fontWeight: .bold
                 )
                 
                 Spacer()
                 
-                ThreeDotsButton(color: .primaryText) {
+                ThreeDotsButton(color: .primaryDarkText) {
                     print("ThreeDot")
                 }
             }
@@ -399,7 +399,7 @@ struct HomeView: View {
                 shadowColor: .clear,
                 shadowRadius: 0,
                 contentAlignment: .center,
-                strokeColor: .primaryText,
+                strokeColor: .secondaryText,
                 strokeWidth: 1
             )
         )
@@ -410,7 +410,7 @@ struct HomeView: View {
         FMText(
             content: "You Have Not Any Transaction",
             font: .body,
-            color: .primaryText,
+            color: .primaryDarkText,
             alignment: .center,
             fontWeight: .bold
         )
@@ -453,7 +453,7 @@ struct HomeView: View {
                 VStackLayout(alignment: .leading) {
                     FMText(content: transaction.category.rawValue.uppercased(),
                            font: .callout,
-                           color: .primaryText,
+                           color: .primaryDarkText,
                            fontWeight: .bold)
                     
                     FMText(content: homeViewModel.getAccount(with: transaction.accountId,
@@ -540,7 +540,7 @@ struct HomeView: View {
             .padding(AppConstants.Paddings.medium)
             .background(
                 FMCardView(
-                    foregroundColor: .primaryText,
+                    foregroundColor: .clear,
                     cornerRadius: AppConstants.CornerRadius.large,
                     shadowColor: .clear,
                     shadowRadius: 0,
